@@ -121,6 +121,9 @@ export default function AdminDashboard({ onLogout }) {
                   <button className="btn btn-green" onClick={startSession} disabled={selected.size < 1}>
                     🚀 ابدأ الجلسة
                   </button>
+                  <button className="btn btn-ghost" onClick={() => setSelected(new Set(allUsers.map(u => u.id)))}>
+                    اختيار الكل
+                  </button>
                   <button className="btn btn-ghost" onClick={() => setSelected(new Set())} disabled={selected.size === 0}>
                     مسح
                   </button>
@@ -175,6 +178,9 @@ export default function AdminDashboard({ onLogout }) {
                       {u.status === 'writing' ? '✍️ يكتب' : '⏳ ينتظر'}
                     </div>
                     {u.clicks > 0 && <div className="uclicks">🖱️ {u.clicks} ضغطه</div>}
+                    <div className="admactions">
+                      <button className="btn-action kick" onClick={(e) => { e.stopPropagation(); kickUser(u.id); }}>طرد</button>
+                    </div>
                     {selected.has(u.id) && (
                       <div className="mt8">
                         <span className="tag tag-green">✓ مختار</span>

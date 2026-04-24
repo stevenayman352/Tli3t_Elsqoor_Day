@@ -67,7 +67,7 @@ export default function LobbyPage({ user, sessionState }) {
               <>
                 <span className="lobby-icon">⏳</span>
                 <div className="lobby-msg" style={{ color: user.talia.accent }}>لسه دورك مجاش</div>
-                <div className="lobby-sub">اضغط على الشعار في أي زاوية</div>
+                <div className="lobby-sub">شوفلك حاجة تعملها يا عم ...</div>
               </>
             )}
           </div>
