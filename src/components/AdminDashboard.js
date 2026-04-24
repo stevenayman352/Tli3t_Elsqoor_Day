@@ -7,7 +7,8 @@ export default function AdminDashboard({ onLogout }) {
   const [users, setUsers]           = useState({});
   const [kickedUsers, setKickedUsers] = useState({});
   const [responses, setResponses]   = useState({});
-  const [selected, setSelected]     = useState(new Set());
+  const [selectedKicked, setSelectedKicked] = useState(new Set());
+  const [selected, setSelected] = useState(new Set());
   const [sessStatus, setSessStatus] = useState('lobby');
   const [tab, setTab]               = useState('users');
   const [filter, setFilter]         = useState('all');
@@ -97,7 +98,11 @@ export default function AdminDashboard({ onLogout }) {
       await set(ref(database, `users/${userId}`), { ...userData, status: 'lobby' });
       await remove(ref(database, `kicked/${userId}`));
     }
-  };;
+  };
+
+  const deleteUser = async (userId) => {
+    await remove(ref(database, `kicked/${userId}`));
+  };
 
   return (
     <div className="page page-top">
@@ -213,6 +218,20 @@ export default function AdminDashboard({ onLogout }) {
         {/* ── KICKED TAB ── */}
         {tab === 'kicked' && (
           <>
+            <div className="ctrl">
+              <button className="btn btn-red" onClick={() => {
+                selectedKicked.forEach(deleteUser);
+                setSelectedKicked(new Set());
+              }} disabled={selectedKicked.size === 0}>
+                🗑 مسح المختارين
+              </button>
+              <button className="btn btn-ghost" onClick={() => setSelectedKicked(new Set())} disabled={selectedKicked.size === 0}>
+                مسح
+              </button>
+              <button className="btn btn-ghost" onClick={() => setSelectedKicked(new Set(Object.keys(kickedUsers)))}>
+                اختيار الكل
+              </button>
+            </div>
             <div className="label">المطرودين</div>
             {Object.keys(kickedUsers).length === 0 ? (
               <div className="tc" style={{ fontFamily: "'Cairo',sans-serif", color: 'var(--muted)', padding: '40px 0' }}>
@@ -221,11 +240,21 @@ export default function AdminDashboard({ onLogout }) {
             ) : (
               <div className="ugrid">
                 {Object.entries(kickedUsers).map(([id, u]) => (
-                  <div key={id} className="ucard kicked-card">
+                  <div 
+                    key={id} 
+                    className={`ucard ${selectedKicked.has(id) ? 'sel' : ''}`}
+                    onClick={() => {
+                      const next = new Set(selectedKicked);
+                      if (next.has(id)) next.delete(id);
+                      else next.add(id);
+                      setSelectedKicked(next);
+                    }}
+                  >
                     <div className="uname">{u.name}</div>
                     <div className="utalia">{u.taliaName}</div>
                     <div className="admactions">
-                      <button className="btn-action" onClick={() => restoreUser(id)}>إعادة</button>
+                      <button className="btn-action" onClick={(e) => { e.stopPropagation(); restoreUser(id); }}>إعادة</button>
+                      <button className="btn-action kick" onClick={(e) => { e.stopPropagation(); deleteUser(id); }}>مسح</button>
                     </div>
                   </div>
                 ))}

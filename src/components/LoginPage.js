@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CODES } from '../constants';
 import { genId } from '../helpers';
 
-export default function LoginPage({ onParticipantLogin, onAdminLogin }) {
+export default function LoginPage({ onParticipantLogin, onAdminLogin, onSpectatorLogin }) {
   const [step, setStep]   = useState(1);       // 1=code, 2=name
   const [code, setCode]   = useState('');
   const [name, setName]   = useState('');
@@ -21,6 +21,10 @@ export default function LoginPage({ onParticipantLogin, onAdminLogin }) {
     }
     if (match.isAdmin) {
       onAdminLogin();
+      return;
+    }
+    if (match.isSpectator) {
+      onSpectatorLogin();
       return;
     }
     setTalia({ ...match, code: trimmed });

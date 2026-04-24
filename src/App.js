@@ -8,6 +8,7 @@ import LoginPage       from './components/LoginPage';
 import LobbyPage       from './components/LobbyPage';
 import WritingPage     from './components/WritingPage';
 import AdminDashboard  from './components/AdminDashboard';
+import SpectatorPage   from './components/SpectatorPage';
 import KickedPage     from './components/KickedPage';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
     const saved = getSession();
     if (!saved) return;
     if (saved.isAdmin) { setScreen('admin'); return; }
+    if (saved.isSpectator) { setScreen('spectator'); return; }
     if (saved.kicked) { setScreen('kicked'); return; }
     setUser(saved);
     setScreen('lobby');
@@ -96,6 +98,11 @@ export default function App() {
     setScreen('admin');
   };
 
+  const handleSpectatorLogin = () => {
+    saveSession({ isSpectator: true });
+    setScreen('spectator');
+  };
+
   const handleLogout = async () => {
     if (user) await remove(ref(database, `users/${user.userId}`));
     clearSession();
@@ -104,6 +111,11 @@ export default function App() {
   };
 
   const handleAdminLogout = () => {
+    clearSession();
+    setScreen('login');
+  };
+
+  const handleSpectatorLogout = () => {
     clearSession();
     setScreen('login');
   };
@@ -126,10 +138,11 @@ export default function App() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <Header />
 
-      {screen === 'login'   && <LoginPage onParticipantLogin={handleParticipantLogin} onAdminLogin={handleAdminLogin} />}
+      {screen === 'login'   && <LoginPage onParticipantLogin={handleParticipantLogin} onAdminLogin={handleAdminLogin} onSpectatorLogin={handleSpectatorLogin} />}
       {screen === 'lobby'   && user && <LobbyPage user={user} sessionState={sessState} />}
       {screen === 'writing' && user && <WritingPage user={user} sessionState={sessState} onSubmit={handleSubmit} />}
       {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} />}
+      {screen === 'spectator' && <SpectatorPage onLogout={handleSpectatorLogout} />}
       {screen === 'kicked'  && <KickedPage />}
     </>
   );
