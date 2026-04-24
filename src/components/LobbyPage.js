@@ -11,10 +11,10 @@ const LEVELS = [
 ];
 
 const CORNERS = [
-  { top: '10px', left: '10px' },
-  { top: '10px', right: '10px' },
-  { bottom: '10px', left: '10px' },
-  { bottom: '10px', right: '10px' },
+  { top: '80px', left: '20px' },
+  { top: '80px', right: '20px' },
+  { top: 'auto', left: '20px', bottom: '80px' },
+  { top: 'auto', right: '20px', bottom: '80px' },
 ];
 
 export default function LobbyPage({ user, sessionState }) {
@@ -50,34 +50,36 @@ export default function LobbyPage({ user, sessionState }) {
   };
 
   return (
-    <div className="page">
-      <div className="card lobby-card">
-        <div className="corner-logo" style={CORNERS[logoPos]}>
-          <img src="/gwalalogo.jpeg" alt="" onClick={handleClick} />
-        </div>
-
-        <div className="lobby-content">
-          {isSelected ? (
-            <>
-              <span className="lobby-icon">✍️</span>
-              <div className="lobby-msg" style={{ color: 'var(--pink)' }}>جاري التحويل...</div>
-            </>
-          ) : (
-            <>
-              <span className="lobby-icon">⏳</span>
-              <div className="lobby-msg" style={{ color: user.talia.accent }}>لسه دورك مجاش</div>
-              <div className="lobby-sub">استنى الأدمن يختارك</div>
-            </>
-          )}
-        </div>
-
-        {showImg && (
-          <div className="level-popup">
-            <img src={showImg.img} alt="" />
-            {showImg.win && <div className="confetti">🎉🏆🎊</div>}
-          </div>
-        )}
+    <>
+      <div className="corner-logo" style={CORNERS[logoPos]}>
+        <img src="/gwalalogo.jpeg" alt="" onClick={handleClick} />
       </div>
-    </div>
+
+      <div className="page">
+        <div className="card lobby-card">
+          <div className="lobby-content">
+            {isSelected ? (
+              <>
+                <span className="lobby-icon">✍️</span>
+                <div className="lobby-msg" style={{ color: 'var(--pink)' }}>جاري التحويل...</div>
+              </>
+            ) : (
+              <>
+                <span className="lobby-icon">⏳</span>
+                <div className="lobby-msg" style={{ color: user.talia.accent }}>لسه دورك مجاش</div>
+                <div className="lobby-sub">اضغط على الشعار في أي زاوية</div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {showImg && (
+        <div className="level-popup">
+          <img src={showImg.img} alt="" />
+          {showImg.win && <div className="confetti">🎉🏆🎊</div>}
+        </div>
+      )}
+    </>
   );
 }

@@ -67,6 +67,9 @@ const CSS = `
   }
   .page-top { align-items: flex-start; padding-top: 28px; }
 
+  .corner-logo { position: fixed; width: 70px; height: 70px; z-index: 999; cursor: pointer; overflow: hidden; }
+  .corner-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; border: 2px solid var(--gold); box-shadow: 0 4px 20px rgba(251,191,36,0.3); }
+
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -197,8 +200,8 @@ const CSS = `
   .lobby-msg { font-family:'Cairo',sans-serif; font-size:26px; font-weight:900; direction:rtl; }
   .lobby-sub { font-family:'Cairo',sans-serif; font-size:14px; color:var(--muted); direction:rtl; margin-top:8px; }
 
-.lobby-card { position:relative; overflow:hidden; min-height:500px; }
-  .lobby-content { position:relative; z-index:1; }
+.lobby-card { position: relative; overflow: hidden; }
+  .lobby-content { position: relative; z-index: 1; }
 
   .corner-logo { position:absolute; width:70px; height:70px; z-index:0; cursor:pointer; }
   .corner-logo img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
