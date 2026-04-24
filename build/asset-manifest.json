@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Tli3t_Elsqoor_Day/static/js/main.ca5edb3a.js",
-    "index.html": "/Tli3t_Elsqoor_Day/index.html",
-    "main.ca5edb3a.js.map": "/Tli3t_Elsqoor_Day/static/js/main.ca5edb3a.js.map"
+    "main.js": "/static/js/main.2bc8e61b.js",
+    "index.html": "/index.html",
+    "main.2bc8e61b.js.map": "/static/js/main.2bc8e61b.js.map"
   },
   "entrypoints": [
-    "static/js/main.ca5edb3a.js"
+    "static/js/main.2bc8e61b.js"
   ]
 }
