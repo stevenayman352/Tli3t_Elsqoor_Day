@@ -77,6 +77,17 @@ export default function App() {
 
   // ── Participant login ──
   const handleParticipantLogin = async (userData) => {
+    const snapUsers = await get(ref(database, 'users'));
+    const snapKicked = await get(ref(database, 'kicked'));
+    
+    const allUsers = { ...(snapUsers.val() || {}), ...(snapKicked.val() || {}) };
+    const nameExists = Object.values(allUsers).some(u => u.name === userData.name);
+    
+    if (nameExists) {
+      alert('هذا الاسم مستخدم من قبل - تواصل مع الأدمن');
+      return;
+    }
+    
     await completeLogin(userData);
   };
 
