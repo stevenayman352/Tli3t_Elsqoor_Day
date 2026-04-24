@@ -43,6 +43,19 @@ export default function App() {
     return unsub;
   }, [user]);
 
+  // Listen for user deletion (kick)
+  useEffect(() => {
+    if (!user) return;
+    const unsub = onValue(ref(database, `users/${user.sessionId}`), snap => {
+      if (!snap.exists()) {
+        clearSession();
+        setUser(null);
+        setScreen('login');
+      }
+    });
+    return unsub;
+  }, [user]);
+
   // ── Complete login after validation ──
   const completeLogin = async (userData) => {
     const userId = userData.sessionId;
