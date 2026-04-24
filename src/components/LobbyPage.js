@@ -17,7 +17,7 @@ const CORNERS = [
   { top: 'auto', right: '20px', bottom: '80px' },
 ];
 
-export default function LobbyPage({ user, sessionState }) {
+export default function LobbyPage({ user, sessionState, onGoToGames }) {
   const [clicks, setClicks] = useState(0);
   const [showImg, setShowImg] = useState(null);
   const [shownLevels, setShownLevels] = useState([]);
@@ -37,9 +37,7 @@ export default function LobbyPage({ user, sessionState }) {
     if (level) {
       setShowImg(level);
       setShownLevels([...shownLevels, level.clicks]);
-      if (level.win) {
-        setWon(true);
-      }
+      if (level.win) setWon(true);
       let newPos;
       do { newPos = Math.floor(Math.random() * CORNERS.length); } while (newPos === logoPos);
       setLogoPos(newPos);
@@ -64,6 +62,10 @@ export default function LobbyPage({ user, sessionState }) {
 
       <div className="page">
         <div className="card lobby-card">
+          <button className="btn btn-primary btn-full" style={{ marginBottom: 20 }} onClick={onGoToGames}>
+            🎮 شارك في الألعاب
+          </button>
+          
           <div className="lobby-content">
             {won ? (
               <>

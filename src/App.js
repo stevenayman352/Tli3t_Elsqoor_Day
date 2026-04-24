@@ -169,7 +169,7 @@ export default function App() {
       <Header />
 
       {screen === 'login'   && <LoginPage onParticipantLogin={handleParticipantLogin} onAdminLogin={handleAdminLogin} onSpectatorLogin={handleSpectatorLogin} />}
-      {screen === 'lobby'   && user && <LobbyPage user={user} sessionState={sessState} />}
+      {screen === 'lobby'   && user && <LobbyPage user={user} sessionState={sessState} onGoToGames={() => setScreen('gameslobby')} />}
       {screen === 'writing' && user && <WritingPage user={user} sessionState={sessState} onSubmit={handleSubmit} />}
       {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} onGoToGamesLobby={handleGoToGamesLobby} onLeaderboard={handleLeaderboard} />}
       {screen === 'spectator' && <SpectatorPage onLogout={handleSpectatorLogout} />}
