@@ -63,7 +63,7 @@ export const CODES = {
     glow:      "rgba(100,116,139,0.45)",
     isSpectator: true,
   },
-  "Ss_352009:)": {
+  "Ss_352009": {
     taliaName: "الأدمن",
     taliaKey:  "admin",
     icon:      "⚡",

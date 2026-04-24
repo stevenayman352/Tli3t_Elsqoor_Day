@@ -276,6 +276,77 @@ const CSS = `
   .p-sub { font-family:'Cairo',sans-serif; font-size:14px; color:var(--muted); direction:rtl; margin-bottom:24px; }
   .p-btns { display:flex; gap:12px; justify-content:center; }
 
+  /* ── GAMES LOBBY ── */
+  .ucard.disabled { opacity:0.3; pointer-events:none; }
+
+  /* ── RED LIGHT GREEN LIGHT ── */
+  .light-display { font-size:48px; font-weight:900; padding:40px; text-align:center; border-radius:20px; margin-bottom:30px; }
+  .light-display.green { background:linear-gradient(135deg,var(--green),#00c8a0); color:#000; }
+  .light-display.red { background:linear-gradient(135deg,var(--pink),#a0002a); color:#fff; animation:pulse 0.5s infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+  .vs-display { display:flex; align-items:center; justify-content:space-between; margin-bottom:30px; }
+  .vs-text { font-size:32px; font-weight:900; color:var(--gold); }
+  .team-side { flex:1; text-align:center; }
+  .team-name { font-family:'Cairo',sans-serif; font-size:18px; font-weight:700; margin-bottom:10px; }
+  .pull-bar { height:30px; background:rgba(255,255,255,0.1); border-radius:15px; overflow:hidden; margin-bottom:8px; }
+  .pull-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--gold)); border-radius:15px; transition:width 0.3s; }
+  .pull-count { font-family:'Orbitron',monospace; font-size:24px; color:var(--gold); }
+
+  /* ── TUG OF WAR ── */
+  .tug-card { text-align:center; }
+  .tug-title { font-size:32px; font-weight:900; margin-bottom:8px; }
+  .tug-sub { color:var(--muted); margin-bottom:30px; }
+  .tug-display { display:flex; align-items:center; justify-content:space-between; margin-bottom:30px; }
+  .tug-team { font-size:18px; font-weight:700; }
+  .tug-rope { flex:1; height:40px; position:relative; margin:0 20px; }
+  .tug-line { height:8px; background:var(--gold); border-radius:4px; }
+  .tug-knot { position:absolute; top:50%; transform:translate(-50%,-50%); font-size:32px; transition:left 0.2s; }
+  .tug-btn { font-size:24px; padding:20px 60px; }
+
+  /* ── GLASS BRIDGE ── */
+  .glass-title { font-size:28px; font-weight:900; text-align:center; margin-bottom:8px; }
+  .glass-sub { text-align:center; color:var(--muted); margin-bottom:20px; }
+  .glass-bridge { display:flex; justify-content:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+  .glass { width:60px; height:80px; border:3px solid var(--gold); border-radius:10px 10px 5px 5px; display:flex; align-items:center; justify-content:center; font-size:24px; background:rgba(255,255,255,0.1); cursor:pointer; transition:all 0.2s; }
+  .glass.available:hover { background:rgba(251,191,36,0.2); transform:scale(1.05); }
+  .glass.team1 { background:linear-gradient(135deg,var(--blue),#005588); }
+  .glass.team2 { background:linear-gradient(135deg,var(--pink),#880044); }
+  .glass-scores { display:flex; justify-content:space-around; font-family:'Orbitron',monospace; font-size:14px; color:var(--muted); margin-bottom:20px; }
+  .glass-message { font-size:20px; font-weight:700; text-align:center; padding:15px; border-radius:10px; background:rgba(255,255,255,0.1); }
+
+  /* ── DALGONA ── */
+  .dalgona-title { font-size:32px; font-weight:900; text-align:center; margin-bottom:8px; }
+  .dalgona-sub { text-align:center; color:var(--muted); margin-bottom:20px; }
+  .lives-display { font-size:32px; text-align:center; margin-bottom:20px; }
+  .dalgona-shape { display:flex; justify-content:center; margin-bottom:20px; cursor:pointer; }
+  .dalgona-circle { width:200px; height:200px; background:#d4a574; border-radius:50%; position:relative; display:flex; align-items:center; justify-content:center; box-shadow:inset 0 -10px 30px rgba(0,0,0,0.3); }
+  .dalgona-star { font-size:80px; color:#8b6914; }
+  .crack { position:absolute; width:20px; height:2px; background:#8b6914; border-radius:2px; }
+  .click-counter { text-align:center; font-family:'Orbitron',monospace; font-size:18px; color:var(--gold); margin-bottom:15px; }
+  .dalgona-message { text-align:center; font-size:18px; font-weight:700; color:var(--gold); }
+
+  /* ── MARBLES ── */
+  .marbles-title { font-size:32px; font-weight:900; text-align:center; margin-bottom:8px; }
+  .marbles-sub { text-align:center; color:var(--muted); margin-bottom:20px; }
+  .scores-row { display:flex; justify-content:space-around; align-items:center; margin-bottom:30px; }
+  .player-score { text-align:center; }
+  .ball-count { font-size:28px; font-weight:900; color:var(--gold); }
+  .pick-number { display:flex; justify-content:center; gap:12px; margin-bottom:25px; }
+  .num-btn { width:50px; height:50px; border-radius:50%; border:2px solid var(--gold); background:transparent; color:var(--gold); font-size:20px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .num-btn.selected, .num-btn:hover { background:var(--gold); color:#000; }
+  .message { text-align:center; font-size:18px; font-weight:700; padding:15px; border-radius:10px; background:rgba(255,255,255,0.1); }
+
+  /* ── LEADERBOARD ── */
+  .leader-item { display:flex; align-items:center; padding:15px; background:var(--card2); border-radius:12px; margin-bottom:10px; }
+  .leader-rank { font-size:24px; font-weight:900; font-family:'Orbitron',monospace; color:var(--gold); width:50px; }
+  .leader-name { flex:1; font-family:'Cairo',sans-serif; font-size:16px; font-weight:700; }
+  .leader-talia { font-size:12px; color:var(--muted); margin-left:10px; }
+  .leader-points { font-family:'Orbitron',monospace; font-size:16px; color:var(--green); }
+
+  /* ── WINNER ── */
+  .winner-announce { font-size:28px; font-weight:900; text-align:center; padding:30px; background:linear-gradient(135deg,var(--gold),#b8860b); color:#000; border-radius:15px; margin-top:20px; animation:winPulse 0.5s ease-out; }
+  @keyframes winPulse { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+
   /* ── UTILS ── */
   .row { display:flex; gap:12px; align-items:center; }
   .mt8  { margin-top:8px;  }

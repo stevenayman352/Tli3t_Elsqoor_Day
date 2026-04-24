@@ -10,11 +10,19 @@ import WritingPage     from './components/WritingPage';
 import AdminDashboard  from './components/AdminDashboard';
 import SpectatorPage   from './components/SpectatorPage';
 import KickedPage     from './components/KickedPage';
+import GamesLobby     from './components/GamesLobby';
+import RedLightGreenLight from './components/RedLightGreenLight';
+import TugOfWar       from './components/TugOfWar';
+import GlassBridge    from './components/GlassBridge';
+import Dalgona        from './components/Dalgona';
+import Marbles        from './components/Marbles';
+import GameLeaderboard from './components/GameLeaderboard';
 
 export default function App() {
   const [screen, setScreen]       = useState('login');
   const [user, setUser]          = useState(null);
   const [sessState, setSessState] = useState(null);
+  const [currentGame, setCurrentGame] = useState(null);
   const screenRef = useRef(screen);
   screenRef.current = screen;
 
@@ -120,6 +128,28 @@ export default function App() {
     setScreen('login');
   };
 
+  const handleStartGame = (gameObj) => {
+    setCurrentGame(gameObj);
+    if (gameObj.game === 'redlight') setScreen('redlight');
+    else if (gameObj.game === 'tug') setScreen('tugofwar');
+    else if (gameObj.game === 'glass') setScreen('glassbridge');
+    else if (gameObj.game === 'dalgona') setScreen('dalgona');
+    else if (gameObj.game === 'marbles') setScreen('marbles');
+  };
+
+  const handleGameEnd = (winner) => {
+    setCurrentGame(null);
+    setScreen('gameslobby');
+  };
+
+  const handleGoToGamesLobby = () => {
+    setScreen('gameslobby');
+  };
+
+  const handleLeaderboard = () => {
+    setScreen('leaderboard');
+  };
+
   // ── Submit writing response ──
   const handleSubmit = async (content) => {
     if (!user) return;
@@ -141,9 +171,16 @@ export default function App() {
       {screen === 'login'   && <LoginPage onParticipantLogin={handleParticipantLogin} onAdminLogin={handleAdminLogin} onSpectatorLogin={handleSpectatorLogin} />}
       {screen === 'lobby'   && user && <LobbyPage user={user} sessionState={sessState} />}
       {screen === 'writing' && user && <WritingPage user={user} sessionState={sessState} onSubmit={handleSubmit} />}
-      {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} />}
+      {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} onGoToGamesLobby={handleGoToGamesLobby} onLeaderboard={handleLeaderboard} />}
       {screen === 'spectator' && <SpectatorPage onLogout={handleSpectatorLogout} />}
       {screen === 'kicked'  && <KickedPage />}
+      {screen === 'gameslobby' && <GamesLobby onStartGame={handleStartGame} onLogout={handleAdminLogout} />}
+      {screen === 'redlight' && currentGame && <RedLightGreenLight gameData={currentGame} onGameEnd={handleGameEnd} />}
+      {screen === 'tugofwar' && currentGame && <TugOfWar gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}
+      {screen === 'glassbridge' && currentGame && <GlassBridge gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}
+      {screen === 'dalgona' && currentGame && <Dalgona gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}
+      {screen === 'marbles' && currentGame && <Marbles gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}
+      {screen === 'leaderboard' && <GameLeaderboard onBack={handleGoToGamesLobby} />}
     </>
   );
 }

@@ -3,7 +3,7 @@ import { database, ref, set, get, onValue, push, update, remove } from '../fireb
 import { TALIA_FILTERS } from '../constants';
 import { fmtTime } from '../helpers';
 
-export default function AdminDashboard({ onLogout }) {
+export default function AdminDashboard({ onLogout, onGoToGamesLobby, onLeaderboard }) {
   const [users, setUsers]           = useState({});
   const [kickedUsers, setKickedUsers] = useState({});
   const [responses, setResponses]   = useState({});
@@ -111,11 +111,10 @@ export default function AdminDashboard({ onLogout }) {
         {/* Header */}
         <div className="row" style={{ justifyContent: 'space-between', marginBottom: 24 }}>
           <div>
-            <div className="label" style={{ margin: 0 }}>🛡️ لوحة الأدمن</div>
+            <div className="label" style={{ margin: 0 }}> لوحة الأدمن</div>
             <div className="mt8">
-              <span className={`tag ${sessStatus === 'writing' ? 'tag-pink' : 'tag-blue'}`}>
-                {sessStatus === 'writing' ? '🔴 جلسة كتابة نشطة' : '⚡ في الانتظار'}
-              </span>
+              <button className="btn btn-ghost" onClick={onGoToGamesLobby}> ابدأ الألعاب</button>
+              <button className="btn btn-ghost" style={{ marginLeft: 8 }} onClick={onLeaderboard}> النقاط</button>
             </div>
           </div>
           <button className="btn btn-ghost" onClick={onLogout}>خروج</button>
