@@ -2,6 +2,7 @@
   "name": "talia-platform",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://stevenayman352.github.io/Tli3t_Elsqoor_Day",
   "dependencies": {
     "firebase": "^10.12.0",
     "react": "^18.2.0",
