@@ -66,6 +66,25 @@ export default function AdminDashboard({ onLogout }) {
     await remove(ref(database, `responses/${sessionId}`));
   };
 
+  const endSessionForOne = async (userId) => {
+    await update(ref(database, `users/${userId}`), { status: 'lobby' });
+    const snap = await get(ref(database, 'session'));
+    const sess = snap.val() || {};
+    if (sess.selectedUsers && sess.selectedUsers[userId]) {
+      const newSel = { ...sess.selectedUsers };
+      delete newSel[userId];
+      if (Object.keys(newSel).length === 0) {
+        await set(ref(database, 'session'), { status: 'lobby' });
+      } else {
+        await update(ref(database, 'session'), { selectedUsers: newSel });
+      }
+    }
+  };
+
+  const kickUser = async (userId) => {
+    await remove(ref(database, `users/${userId}`));
+  };
+
   return (
     <div className="page page-top">
       <div className="card card-wide">
@@ -122,6 +141,10 @@ export default function AdminDashboard({ onLogout }) {
                       <div className="uname">{u.name}</div>
                       <div className="utalia">{u.taliaName}</div>
                       <div className="ustatus s-w">✍️ يكتب</div>
+                      <div className="admactions">
+                        <button className="btn-action" onClick={() => endSessionForOne(u.id)}>إنهاء</button>
+                        <button className="btn-action kick" onClick={() => kickUser(u.id)}>طرد</button>
+                      </div>
                     </div>
                   ))}
                 </div>

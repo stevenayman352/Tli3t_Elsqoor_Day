@@ -10,10 +10,18 @@ const LEVELS = [
   { clicks: 30, img: '/gwala.jpeg', win: true },
 ];
 
+const CORNERS = [
+  { top: '10px', left: '10px' },
+  { top: '10px', right: '10px' },
+  { bottom: '10px', left: '10px' },
+  { bottom: '10px', right: '10px' },
+];
+
 export default function LobbyPage({ user, sessionState }) {
   const [clicks, setClicks] = useState(0);
   const [showImg, setShowImg] = useState(null);
   const [shownLevels, setShownLevels] = useState([]);
+  const [logoPos, setLogoPos] = useState(0);
   const isSelected = sessionState?.selectedUsers?.[user.sessionId];
 
   useEffect(() => {
@@ -28,6 +36,9 @@ export default function LobbyPage({ user, sessionState }) {
     if (level) {
       setShowImg(level);
       setShownLevels([...shownLevels, level.clicks]);
+      let newPos;
+      do { newPos = Math.floor(Math.random() * CORNERS.length); } while (newPos === logoPos);
+      setLogoPos(newPos);
       setTimeout(() => setShowImg(null), 2000);
     }
   }, [clicks]);
@@ -41,10 +52,9 @@ export default function LobbyPage({ user, sessionState }) {
   return (
     <div className="page">
       <div className="card lobby-card">
-        <div className="corner-logo tl"><img src="/gwalalogo.jpeg" alt="" /></div>
-        <div className="corner-logo tr"><img src="/gwalalogo.jpeg" alt="" /></div>
-        <div className="corner-logo bl"><img src="/gwalalogo.jpeg" alt="" /></div>
-        <div className="corner-logo br"><img src="/gwalalogo.jpeg" alt="" /></div>
+        <div className="corner-logo" style={CORNERS[logoPos]}>
+          <img src="/gwalalogo.jpeg" alt="" onClick={handleClick} />
+        </div>
 
         <div className="lobby-content">
           {isSelected ? (
@@ -60,8 +70,6 @@ export default function LobbyPage({ user, sessionState }) {
             </>
           )}
         </div>
-
-        <div className="click-zone" onClick={handleClick} />
 
         {showImg && (
           <div className="level-popup">

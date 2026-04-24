@@ -197,16 +197,11 @@ const CSS = `
   .lobby-msg { font-family:'Cairo',sans-serif; font-size:26px; font-weight:900; direction:rtl; }
   .lobby-sub { font-family:'Cairo',sans-serif; font-size:14px; color:var(--muted); direction:rtl; margin-top:8px; }
 
-  .lobby-card { position:relative; overflow:hidden; min-height:500px; }
+.lobby-card { position:relative; overflow:hidden; min-height:500px; }
   .lobby-content { position:relative; z-index:1; }
-  .click-zone { position:absolute; top:0; left:0; right:0; bottom:0; z-index:2; cursor:pointer; }
 
-  .corner-logo { position:absolute; width:80px; height:80px; z-index:0; }
-  .corner-logo img { width:100%; height:100%; object-fit:cover; border-radius:12px; opacity:0.4; }
-  .corner-logo.tl { top:15px; left:15px; }
-  .corner-logo.tr { top:15px; right:15px; }
-  .corner-logo.bl { bottom:15px; left:15px; }
-  .corner-logo.br { bottom:15px; right:15px; }
+  .corner-logo { position:absolute; width:70px; height:70px; z-index:0; cursor:pointer; }
+  .corner-logo img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
 
   .level-popup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; animation:popup 2s ease-out forwards; }
   .level-popup img { width:300px; height:300px; border-radius:20px; border:6px solid var(--gold); box-shadow:0 0 60px var(--gold); }
@@ -237,6 +232,10 @@ const CSS = `
   .utalia  { font-family:'Cairo',sans-serif; font-size:11px; color:var(--muted); margin-bottom:5px; }
   .uclicks { font-family:'Orbitron',monospace; font-size:10px; color:var(--gold); letter-spacing:1px; margin-top:4px; }
   .ustatus { font-family:'Orbitron',monospace; font-size:9px; letter-spacing:1px; }
+  .admactions { display:flex; gap:6px; margin-top:8px; }
+  .btn-action { font-size:9px; padding:4px 10px; border-radius:6px; background:rgba(0,212,255,0.15); color:var(--blue); border:1px solid var(--blue); cursor:pointer; font-family:'Orbitron',monospace; }
+  .btn-action.kick { background:rgba(255,45,120,0.15); color:var(--pink); border-color:var(--pink); }
+  .btn-action:hover { opacity:0.8; }
   .s-w { color:var(--pink); }
   .s-l { color:var(--muted); }
 
