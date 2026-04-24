@@ -206,9 +206,14 @@ const CSS = `
   .corner-logo { position:absolute; width:70px; height:70px; z-index:0; cursor:pointer; }
   .corner-logo img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
 
-  .level-popup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; animation:popup 2s ease-out forwards; }
+  .level-popup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1000; animation:popup 2.5s ease-out forwards; }
   .level-popup img { width:300px; height:300px; border-radius:20px; border:6px solid var(--gold); box-shadow:0 0 60px var(--gold); }
   .confetti { font-size:70px; text-align:center; margin-top:10px; animation:confetti 0.5s ease-out infinite; }
+
+  .win-screen { text-align:center; padding:40px 0; }
+  .win-img img { width:250px; height:250px; border-radius:20px; border:6px solid var(--gold); box-shadow:0 0 40px var(--gold); margin-bottom:20px; }
+  .win-text { font-family:'Cairo',sans-serif; font-size:28px; font-weight:900; color:var(--gold); direction:rtl; margin-bottom:10px; }
+  .win-sub { font-family:'Orbitron',monospace; font-size:14px; color:var(--muted); letter-spacing:2px; }
 
   @keyframes popup { 0%{opacity:0;transform:translate(-50%,-30%)} 20%{opacity:1;transform:translate(-50%,-50%)} 80%{opacity:1;transform:translate(-50%,-50%)} 100%{opacity:0;transform:translate(-50%,-50%)} }
 
