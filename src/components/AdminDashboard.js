@@ -151,6 +151,7 @@ export default function AdminDashboard({ onLogout }) {
                     <div className={`ustatus ${u.status === 'writing' ? 's-w' : 's-l'}`}>
                       {u.status === 'writing' ? '✍️ يكتب' : '⏳ ينتظر'}
                     </div>
+                    {u.clicks > 0 && <div className="uclicks">🖱️ {u.clicks} ضغطه</div>}
                     {selected.has(u.id) && (
                       <div className="mt8">
                         <span className="tag tag-green">✓ مختار</span>
