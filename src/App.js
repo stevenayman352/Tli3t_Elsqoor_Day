@@ -55,6 +55,21 @@ export default function App() {
     return unsub;
   }, [user]);
 
+  // Auto-redirect to games lobby when game starts
+  useEffect(() => {
+    if (!user || (screen !== 'lobby' && screen !== 'gameslobby')) return;
+    const unsub = onValue(ref(database, 'game'), snap => {
+      const game = snap.val();
+      if (game && game.status === 'active' && screen !== 'gameslobby') {
+        setScreen('gameslobby');
+      } else if ((!game || game.status !== 'active') && screen === 'gameslobby') {
+        // Game ended, clear game and redirect back to lobby
+        setCurrentGame(null);
+      }
+    });
+    return unsub;
+  }, [user, screen]);
+
   // Listen for user deletion (kick)
   useEffect(() => {
     if (!user) return;
@@ -174,7 +189,14 @@ export default function App() {
       {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} onGoToGamesLobby={handleGoToGamesLobby} onLeaderboard={handleLeaderboard} />}
       {screen === 'spectator' && <SpectatorPage onLogout={handleSpectatorLogout} />}
       {screen === 'kicked'  && <KickedPage />}
-      {screen === 'gameslobby' && <GamesLobby onStartGame={handleStartGame} onLogout={handleAdminLogout} />}
+      {screen === 'gameslobby' && <GamesLobby onStartGame={handleStartGame} onGameSelected={(game) => {
+            setCurrentGame(game);
+            if (game.game === 'redlight') setScreen('redlight');
+            else if (game.game === 'tug') setScreen('tugofwar');
+            else if (game.game === 'glass') setScreen('glassbridge');
+            else if (game.game === 'dalgona') setScreen('dalgona');
+            else if (game.game === 'marbles') setScreen('marbles');
+          }} />}
       {screen === 'redlight' && currentGame && <RedLightGreenLight gameData={currentGame} onGameEnd={handleGameEnd} />}
       {screen === 'tugofwar' && currentGame && <TugOfWar gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}
       {screen === 'glassbridge' && currentGame && <GlassBridge gameData={currentGame} user={user} onGameEnd={handleGameEnd} />}

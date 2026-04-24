@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { database, ref, set, onValue } from '../firebase';
 import CSS from '../styles';
 
-export default function GamesLobby({ onStartGame, onLogout }) {
+export default function GamesLobby({ onStartGame, onGameSelected }) {
   const [users, setUsers] = useState({});
   const [gameType, setGameType] = useState(null);
   const [selectedTeam1, setSelectedTeam1] = useState(null);
@@ -10,6 +10,17 @@ export default function GamesLobby({ onStartGame, onLogout }) {
   const [soloPlayer1, setSoloPlayer1] = useState(null);
   const [soloPlayer2, setSoloPlayer2] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
+
+  // Listen for active game and auto-redirect
+  useEffect(() => {
+    const unsub = onValue(ref(database, 'game'), snap => {
+      const game = snap.val();
+      if (game && game.status === 'active') {
+        if (onGameSelected) onGameSelected(game);
+      }
+    });
+    return unsub;
+  }, []);
 
   useEffect(() => {
     const unsub = onValue(ref(database, 'users'), snap => {
@@ -25,10 +36,7 @@ export default function GamesLobby({ onStartGame, onLogout }) {
   });
 
   const teamList = Object.entries(teams);
-  const soloPlayers = Object.entries(users).map(([id, u]) => ({ id, ...u })).filter(u => u.status === 'lobby');
-
-  const selectedTeam1Data = teamList.find(t => t[0] === selectedTeam1);
-  const selectedTeam2Data = teamList.find(t => t[0] === selectedTeam2);
+  const soloPlayers = Object.values(users).filter(u => u.status === 'lobby');
 
   const handleStartTeamGame = async () => {
     if (!selectedTeam1 || !selectedTeam2 || !selectedGame) return;
@@ -41,7 +49,7 @@ export default function GamesLobby({ onStartGame, onLogout }) {
       scores: { [selectedTeam1]: 0, [selectedTeam2]: 0 },
       startTime: Date.now(),
     });
-    onStartGame({ type: 'team', game: selectedGame, team1: selectedTeam1, team2: selectedTeam2 });
+    if (onStartGame) onStartGame({ type: 'team', game: selectedGame, team1: selectedTeam1, team2: selectedTeam2 });
   };
 
   const handleStartSoloGame = async () => {
@@ -58,7 +66,11 @@ export default function GamesLobby({ onStartGame, onLogout }) {
       scores: { [soloPlayer1.taliaKey]: 0, [soloPlayer2.taliaKey]: 0 },
       startTime: Date.now(),
     });
-    onStartGame({ type: 'solo', game: selectedGame, player1: soloPlayer1.id, player2: soloPlayer2.id });
+    if (onStartGame) onStartGame({ type: 'solo', game: selectedGame, player1: soloPlayer1.id, player2: soloPlayer2.id });
+  };
+
+  const handleEndGame = async () => {
+    await set(ref(database, 'game'), null);
   };
 
   return (
@@ -70,13 +82,11 @@ export default function GamesLobby({ onStartGame, onLogout }) {
             <div>
               <div className="label" style={{ margin: 0 }}>🎮 lobby الألعاب</div>
               <div className="mt8">
-                <span className="tag tag-gold">اختر الفرق واللعب</span>
+                <button className="btn btn-red" onClick={handleEndGame}>🛑 إنهاء اللعبة</button>
               </div>
             </div>
-            <button className="btn btn-ghost" onClick={onLogout}>خروج</button>
           </div>
 
-          {/* Game Type Selection */}
           <div className="tabs">
             <button className={`tab ${gameType === 'team' ? 'on' : ''}`} onClick={() => setGameType('team')}>
               ضد فريق
@@ -92,7 +102,6 @@ export default function GamesLobby({ onStartGame, onLogout }) {
             </div>
           ) : gameType === 'team' ? (
             <>
-              {/* Team Game Selection */}
               <div className="label">اختر اللعبة</div>
               <div className="tabs" style={{ marginBottom: 20 }}>
                 {['redlight', 'tug', 'glass'].map(g => (
@@ -114,8 +123,8 @@ export default function GamesLobby({ onStartGame, onLogout }) {
 
               <div className="label">اختر الفريق الثاني</div>
               <div className="ugrid" style={{ marginBottom: 20 }}>
-                {teamList.map(([key, members]) => (
-                  <div key={key} className={`ucard ${selectedTeam2 === key ? 'sel' : ''} ${selectedTeam1 === key ? 'disabled' : ''}`} onClick={() => selectedTeam1 !== key && setSelectedTeam2(key)}>
+                {teamList.filter(([key]) => key !== selectedTeam1).map(([key, members]) => (
+                  <div key={key} className={`ucard ${selectedTeam2 === key ? 'sel' : ''}`} onClick={() => setSelectedTeam2(key)}>
                     <div className="uname">{members[0]?.taliaName || key}</div>
                     <div className="utalia">{members.length} عضو</div>
                   </div>
@@ -128,7 +137,6 @@ export default function GamesLobby({ onStartGame, onLogout }) {
             </>
           ) : (
             <>
-              {/* Solo Game Selection */}
               <div className="label">اختر اللعبة</div>
               <div className="tabs" style={{ marginBottom: 20 }}>
                 {['dalgona', 'marbles'].map(g => (
