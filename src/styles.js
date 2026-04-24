@@ -217,6 +217,12 @@ const CSS = `
 
   @keyframes popup { 0%{opacity:0;transform:translate(-50%,-30%)} 20%{opacity:1;transform:translate(-50%,-50%)} 80%{opacity:1;transform:translate(-50%,-50%)} 100%{opacity:0;transform:translate(-50%,-50%)} }
 
+  /* ── KICKED PAGE ── */
+  .kicked-card { text-align:center; }
+  .kicked-emoji { font-size:80px; margin-bottom:20px; }
+  .kicked-title { font-family:'Cairo',sans-serif; font-size:32px; font-weight:900; color:var(--pink); direction:rtl; margin-bottom:10px; }
+  .kicked-sub { font-family:'Cairo',sans-serif; font-size:16px; color:var(--muted); direction:rtl; margin-bottom:30px; }
+
   /* ── WRITING ── */
   .warea { width:100%; min-height:240px; background:rgba(255,255,255,0.03); border:1px solid rgba(0,212,255,0.25); border-radius:13px; padding:16px; color:var(--text); font-family:'Cairo',sans-serif; font-size:16px; line-height:1.8; resize:vertical; outline:none; direction:rtl; transition:border-color .2s, box-shadow .2s; }
   .warea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,212,255,0.1); }

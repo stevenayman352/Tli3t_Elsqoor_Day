@@ -5,6 +5,7 @@ import { fmtTime } from '../helpers';
 
 export default function AdminDashboard({ onLogout }) {
   const [users, setUsers]           = useState({});
+  const [kickedUsers, setKickedUsers] = useState({});
   const [responses, setResponses]   = useState({});
   const [selected, setSelected]     = useState(new Set());
   const [sessStatus, setSessStatus] = useState('lobby');
@@ -13,9 +14,10 @@ export default function AdminDashboard({ onLogout }) {
 
   useEffect(() => {
     const unU = onValue(ref(database, 'users'),     s => setUsers(s.val() || {}));
+    const unK = onValue(ref(database, 'kicked'),   s => setKickedUsers(s.val() || {}));
     const unS = onValue(ref(database, 'session'),   s => setSessStatus((s.val() || {}).status || 'lobby'));
     const unR = onValue(ref(database, 'responses'), s => setResponses(s.val() || {}));
-    return () => { unU(); unS(); unR(); };
+    return () => { unU(); unK(); unS(); unR(); };
   }, []);
 
   const allUsers    = Object.entries(users).map(([id, u]) => ({ id, ...u }));
@@ -82,8 +84,20 @@ export default function AdminDashboard({ onLogout }) {
   };
 
   const kickUser = async (userId) => {
+    const userData = users[userId];
+    if (userData) {
+      await set(ref(database, `kicked/${userId}`), userData);
+    }
     await remove(ref(database, `users/${userId}`));
   };
+
+  const restoreUser = async (userId) => {
+    const userData = kickedUsers[userId];
+    if (userData) {
+      await set(ref(database, `users/${userId}`), { ...userData, status: 'lobby' });
+      await remove(ref(database, `kicked/${userId}`));
+    }
+  };;
 
   return (
     <div className="page page-top">
@@ -106,6 +120,9 @@ export default function AdminDashboard({ onLogout }) {
         <div className="tabs">
           <button className={`tab ${tab === 'users' ? 'on' : ''}`} onClick={() => setTab('users')}>
             المشتركين ({allUsers.length})
+          </button>
+          <button className={`tab ${tab === 'kicked' ? 'on' : ''}`} onClick={() => setTab('kicked')}>
+            المطرودين ({Object.keys(kickedUsers).length})
           </button>
           <button className={`tab ${tab === 'responses' ? 'on' : ''}`} onClick={() => setTab('responses')}>
             الإجابات ({responses.length})
@@ -186,6 +203,30 @@ export default function AdminDashboard({ onLogout }) {
                         <span className="tag tag-green">✓ مختار</span>
                       </div>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── KICKED TAB ── */}
+        {tab === 'kicked' && (
+          <>
+            <div className="label">المطرودين</div>
+            {Object.keys(kickedUsers).length === 0 ? (
+              <div className="tc" style={{ fontFamily: "'Cairo',sans-serif", color: 'var(--muted)', padding: '40px 0' }}>
+                مفيش مطرودين 🌙
+              </div>
+            ) : (
+              <div className="ugrid">
+                {Object.entries(kickedUsers).map(([id, u]) => (
+                  <div key={id} className="ucard kicked-card">
+                    <div className="uname">{u.name}</div>
+                    <div className="utalia">{u.taliaName}</div>
+                    <div className="admactions">
+                      <button className="btn-action" onClick={() => restoreUser(id)}>إعادة</button>
+                    </div>
                   </div>
                 ))}
               </div>

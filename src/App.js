@@ -8,6 +8,7 @@ import LoginPage       from './components/LoginPage';
 import LobbyPage       from './components/LobbyPage';
 import WritingPage     from './components/WritingPage';
 import AdminDashboard  from './components/AdminDashboard';
+import KickedPage     from './components/KickedPage';
 
 export default function App() {
   const [screen, setScreen]       = useState('login');
@@ -21,6 +22,7 @@ export default function App() {
     const saved = getSession();
     if (!saved) return;
     if (saved.isAdmin) { setScreen('admin'); return; }
+    if (saved.kicked) { setScreen('kicked'); return; }
     setUser(saved);
     setScreen('lobby');
   }, []);
@@ -50,7 +52,7 @@ export default function App() {
       if (!snap.exists()) {
         clearSession();
         setUser(null);
-        setScreen('login');
+        setScreen('kicked');
       }
     });
     return unsub;
@@ -117,6 +119,7 @@ export default function App() {
       {screen === 'lobby'   && user && <LobbyPage user={user} sessionState={sessState} />}
       {screen === 'writing' && user && <WritingPage user={user} sessionState={sessState} onSubmit={handleSubmit} />}
       {screen === 'admin'   && <AdminDashboard onLogout={handleAdminLogout} />}
+      {screen === 'kicked'  && <KickedPage />}
     </>
   );
 }
